@@ -144,7 +144,7 @@ def _is_already_running(lock_file: Path) -> bool:
             pid = int(lock_file.read_text().strip())
             # Check if process with that PID exists
             import ctypes
-            handle = ctypes.windll.kernel32.OpenProcess(0x100000, False, pid)
+            handle = ctypes.windll.kernel32.OpenProcess(0x1000, False, pid)  # PROCESS_QUERY_LIMITED_INFORMATION
             if handle:
                 ctypes.windll.kernel32.CloseHandle(handle)
                 return True
@@ -178,7 +178,8 @@ class PhishUrlApp:
         from icon_gen import make_all_icons
 
         self._lock_file = lock_file
-        self._check_queue: queue.Queue = queue.Queue()
+        self._check_queue: queue.Queue = queue.Queue()   # URLs to check
+        self._action_queue: queue.Queue = queue.Queue()  # tray actions → main thread
         self._icons = make_all_icons(size=64)
         self._tray = None
         self._clipboard_mon = None
@@ -199,8 +200,8 @@ class PhishUrlApp:
         self._start_tray()
         self._apply_clipboard_monitor()
 
-        # Process URL check queue via tkinter's after()
-        self._root.after(300, self._process_queue)
+        # Drive both queues from the tkinter main loop (thread-safe polling)
+        self._root.after(200, self._process_queues)
 
         log.info("PhishUrl started (PID %s)", os.getpid())
         self._root.mainloop()
@@ -215,37 +216,35 @@ class PhishUrlApp:
 
         icons = self._icons
 
+        # All callbacks post to _action_queue — never touch tkinter from here.
+        # The main thread drains the queue via _process_queues().
         def pause_resume(icon, item):
-            self._paused = not self._paused
-            icon.icon = icons["inactive"] if self._paused else icons["normal"]
-            icon.title = "PhishUrl (paused)" if self._paused else "PhishUrl — Active"
-            log.info("Monitoring %s", "paused" if self._paused else "resumed")
+            self._action_queue.put("pause_resume")
 
         def check_url_menu(icon, item):
-            self._root.after(0, self._show_manual_check_dialog)
+            self._action_queue.put("check_url")
 
         def open_settings(icon, item):
-            self._root.after(0, self._show_settings)
+            self._action_queue.put("settings")
 
         def quit_app(icon, item):
-            self._root.after(0, self._quit)
+            self._action_queue.put("quit")
 
         menu = Menu(
-            MenuItem("PhishUrl — Active", None, enabled=False),
+            MenuItem("LinkGuard — Active", None, enabled=False),
             Menu.SEPARATOR,
             MenuItem("Check a URL…",       check_url_menu),
             MenuItem("Settings…",          open_settings),
             Menu.SEPARATOR,
-            MenuItem(lambda item: "Resume monitoring" if self._paused else "Pause monitoring",
-                     pause_resume),
+            MenuItem("Pause monitoring",   pause_resume),
             Menu.SEPARATOR,
             MenuItem("Quit",               quit_app),
         )
 
         self._tray = pystray.Icon(
-            "PhishUrl",
+            "LinkGuard",
             icons["normal"],
-            "PhishUrl — Active",
+            "LinkGuard — Active",
             menu=menu,
         )
         self._tray.run_detached()
@@ -273,18 +272,43 @@ class PhishUrlApp:
         if not self._paused:
             self._check_queue.put(url)
 
-    # ── URL processing ────────────────────────────────────────────────────────
+    # ── Queue processing (main thread only) ──────────────────────────────────
 
-    def _process_queue(self):
-        """Drain the URL queue and handle each URL on the main (tkinter) thread."""
+    def _process_queues(self):
+        """Drain both queues. Runs on the main thread via root.after() polling."""
+        # Tray actions
+        try:
+            while True:
+                action = self._action_queue.get_nowait()
+                self._handle_tray_action(action)
+        except queue.Empty:
+            pass
+
+        # URL checks
         try:
             while True:
                 url = self._check_queue.get_nowait()
                 self._process_url(url)
         except queue.Empty:
             pass
-        finally:
-            self._root.after(300, self._process_queue)
+
+        self._root.after(200, self._process_queues)
+
+    def _handle_tray_action(self, action: str):
+        if action == "quit":
+            self._quit()
+        elif action == "check_url":
+            self._show_manual_check_dialog()
+        elif action == "settings":
+            self._show_settings()
+        elif action == "pause_resume":
+            self._paused = not self._paused
+            icon_key = "inactive" if self._paused else "normal"
+            title = "LinkGuard (paused)" if self._paused else "LinkGuard — Active"
+            if self._tray:
+                self._tray.icon = self._icons[icon_key]
+                self._tray.title = title
+            log.info("Monitoring %s", "paused" if self._paused else "resumed")
 
     def _process_url(self, url: str):
         import database as db

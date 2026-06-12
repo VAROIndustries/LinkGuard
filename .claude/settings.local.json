@@ -6,7 +6,22 @@
       "Bash(/c/Users/gvaro/AppData/Local/Programs/Python/Python312/python.exe -c \"\nfrom icon_gen import make_all_icons\nicons = make_all_icons\\(size=64\\)\nfor state, img in icons.items\\(\\):\n    print\\(f'Icon [{state}]: {img.size} {img.mode}'\\)\n\nfrom checker import check_url\n\ntests = [\n    \\('https://secure-login.paypal.com.evilsite.ru/verify', 'brand in subdomain'\\),\n    \\('http://192.168.1.1/admin/login', 'IP address'\\),\n    \\('https://xn--pple-43d.com', 'IDN punycode'\\),\n    \\('https://bit.ly/3xYZabc', 'URL shortener'\\),\n    \\('https://github.com/microsoft/vscode', 'clean'\\),\n    \\('https://bankofamerica-secure.tk/login/verify/account/password', 'many flags'\\),\n]\nprint\\(\\)\nfor url, desc in tests:\n    r = check_url\\(url\\)\n    print\\(f'[{r.level:10}] score={r.score:3}  {desc}'\\)\n    if r.reasons:\n        for reason in r.reasons[:2]:\n            print\\(f'              -> {reason}'\\)\n\")",
       "Bash(/c/Users/gvaro/AppData/Local/Programs/Python/Python312/python.exe -c \"\nfrom checker import check_url\ntests = [\n    \\('https://bankofamerica-secure.tk/login/verify/account/password', 'brand in label'\\),\n    \\('https://bit.ly/3xYZabc', 'URL shortener'\\),\n    \\('https://paypal-secure-login.com/account/verify', 'paypal in label'\\),\n    \\('https://google.com', 'clean'\\),\n    \\('https://github.com', 'clean'\\),\n]\nfor url, desc in tests:\n    r = check_url\\(url\\)\n    print\\(f'[{r.level:10}] score={r.score:3}  {desc}'\\)\n    for reason in r.reasons[:3]:\n        print\\(f'              -> {reason}'\\)\n\" 2>&1)",
       "Bash(git init:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git reset:*)",
+      "Bash(git rm:*)",
+      "Bash(git commit:*)",
+      "Bash(gh repo:*)",
+      "Bash(/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe -ExecutionPolicy Bypass -File \"C:/Users/gvaro/AppData/Local/Temp/push_ns_20260612_1.ps1\" 2>&1)",
+      "Bash(/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe -ExecutionPolicy Bypass -File \"C:/Users/gvaro/AppData/Local/Temp/kd_20260612_1.ps1\" 2>&1)",
+      "Bash(git push:*)",
+      "Bash(taskkill /F /PID 65300)",
+      "Bash(taskkill /F /IM pythonw.exe)",
+      "Bash(/c/Windows/System32/taskkill.exe /F /IM pythonw.exe)",
+      "Bash(cmd.exe /c \"taskkill /F /IM pythonw.exe\")",
+      "Bash(/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe -Command \"Stop-Process -Name pythonw -Force -ErrorAction SilentlyContinue; Write-Host done\")",
+      "Bash(git -C /c/Projects/PhishUrl add main.py)",
+      "Bash(git -C /c/Projects/PhishUrl diff --cached --stat)",
+      "Bash(git:*)"
     ]
   }
 }

@@ -10,7 +10,7 @@ from pathlib import Path
 
 log = logging.getLogger(__name__)
 
-APP_NAME = "PhishUrl"
+APP_NAME = "LinkGuard"
 # When frozen with PyInstaller, sys.executable is the .exe; otherwise use the script path
 EXE_PATH = sys.executable if getattr(sys, "frozen", False) else os.path.abspath(sys.argv[0])
 
@@ -69,7 +69,7 @@ def is_protocol_handler_enabled() -> bool:
         key_path = rf"{PROTO_BASE}\http\shell\open\command"
         with winreg.OpenKey(winreg.HKEY_CURRENT_USER, key_path) as k:
             val, _ = winreg.QueryValueEx(k, "")
-            return EXE_PATH.lower() in val.lower() or "phishurl" in val.lower()
+            return EXE_PATH.lower() in val.lower() or "linkguard" in val.lower()
     except FileNotFoundError:
         return False
 
@@ -81,7 +81,7 @@ def enable_protocol_handler() -> bool:
     Returns True on success.
     """
     real_cmd = _get_current_handler("http")
-    if real_cmd and (EXE_PATH.lower() in real_cmd.lower() or "phishurl" in real_cmd.lower()):
+    if real_cmd and (EXE_PATH.lower() in real_cmd.lower() or "linkguard" in real_cmd.lower()):
         # Already us — nothing to do
         return True
 

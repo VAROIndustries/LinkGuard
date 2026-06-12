@@ -227,7 +227,7 @@ def check_url(url: str, gsb_key: str = "", vt_key: str = "") -> RiskResult:
 def _check_google_safe_browsing(url: str, api_key: str, result: RiskResult):
     endpoint = f"https://safebrowsing.googleapis.com/v4/threatMatches:find?key={api_key}"
     payload = {
-        "client": {"clientId": "phishurl", "clientVersion": "1.0"},
+        "client": {"clientId": "linkguard", "clientVersion": "1.0"},
         "threatInfo": {
             "threatTypes": ["MALWARE", "SOCIAL_ENGINEERING", "UNWANTED_SOFTWARE",
                             "POTENTIALLY_HARMFUL_APPLICATION"],

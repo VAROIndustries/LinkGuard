@@ -58,7 +58,7 @@ class AlertDialog(tk.Tk):
         r = self.result
         level_color = COLORS.get(r.level, COLORS["muted"])
 
-        self.title("PhishUrl — URL Check")
+        self.title("LinkGuard — URL Check")
         self.configure(bg=COLORS["bg"])
         self.resizable(False, False)
         self.geometry("540x420")

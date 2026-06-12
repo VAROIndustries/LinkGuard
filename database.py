@@ -1,6 +1,6 @@
 """
-SQLite database layer for PhishUrl.
-Stored at %%APPDATA%%/PhishUrl/phishurl.db
+SQLite database layer for LinkGuard.
+Stored at %%APPDATA%%/LinkGuard/linkguard.db
 """
 import sqlite3
 import os
@@ -8,9 +8,15 @@ import logging
 from datetime import datetime
 from pathlib import Path
 
-APP_DIR = Path(os.environ.get("APPDATA", os.path.expanduser("~"))) / "PhishUrl"
+APP_DIR = Path(os.environ.get("APPDATA", os.path.expanduser("~"))) / "LinkGuard"
 APP_DIR.mkdir(parents=True, exist_ok=True)
-DB_PATH = APP_DIR / "phishurl.db"
+DB_PATH = APP_DIR / "linkguard.db"
+
+# Migrate data from old PhishUrl directory if needed
+_old_dir = Path(os.environ.get("APPDATA", os.path.expanduser("~"))) / "PhishUrl"
+if not DB_PATH.exists() and (_old_dir / "phishurl.db").exists():
+    import shutil
+    shutil.copy2(_old_dir / "phishurl.db", DB_PATH)
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS whitelist (

@@ -1,4 +1,4 @@
-# PhishUrl
+# LinkGuard
 
 A Windows system tray application that silently monitors URLs — from your clipboard and every link you click — and warns you before a phishing page can load.
 
@@ -47,18 +47,18 @@ A Windows system tray application that silently monitors URLs — from your clip
 **Requirements:** Python 3.12 · Windows 10/11
 
 ```
-git clone https://github.com/VAROIndustries/PhishUrl.git
-cd PhishUrl
+git clone https://github.com/VAROIndustries/LinkGuard.git
+cd LinkGuard
 pip install -r requirements.txt
 ```
 
 **Run (no console window):**
 
 ```
-pythonw PhishUrl.pyw
+pythonw LinkGuard.pyw
 ```
 
-Or double-click `PhishUrl.pyw` in Explorer.
+Or double-click `LinkGuard.pyw` in Explorer.
 
 **Build a standalone `.exe`:**
 
@@ -74,7 +74,6 @@ After launching, a shield icon appears in the system tray.
 
 | Tray action | Description |
 |---|---|
-| Left-click | (no action — right-click for menu) |
 | **Check a URL…** | Manually paste and check any URL |
 | **Settings…** | Open the settings window |
 | **Pause monitoring** | Temporarily stop clipboard checks |
@@ -91,7 +90,7 @@ When a suspicious or phishing URL is detected you'll see a popup showing the ris
 
 ### Link interception (protocol handler)
 
-Enable **"Intercept all http/https link clicks"** in Settings → General. PhishUrl will register itself as the system URL handler under `HKEY_CURRENT_USER` (no administrator rights needed). Every link you click in any application will be checked before your browser opens it.
+Enable **"Intercept all http/https link clicks"** in Settings → General. LinkGuard will register itself as the system URL handler under `HKEY_CURRENT_USER` (no administrator rights needed). Every link you click in any application will be checked before your browser opens it.
 
 To disable, uncheck the same setting and your previous default browser is restored automatically.
 
@@ -115,7 +114,7 @@ Both APIs are optional. Heuristic checks run without any keys.
 - **Google Safe Browsing:** [console.cloud.google.com](https://console.cloud.google.com) → enable Safe Browsing API → create an API key
 - **VirusTotal:** [virustotal.com](https://www.virustotal.com) → sign up → My API key
 
-Keys are stored locally in `%APPDATA%\PhishUrl\phishurl.db` and never sent anywhere except the respective API endpoint.
+Keys are stored locally in `%APPDATA%\LinkGuard\linkguard.db` and never sent anywhere except the respective API endpoint.
 
 ---
 
@@ -123,8 +122,8 @@ Keys are stored locally in `%APPDATA%\PhishUrl\phishurl.db` and never sent anywh
 
 All data stays on your machine:
 
-- **Database:** `%APPDATA%\PhishUrl\phishurl.db` — whitelist, blacklist, history, settings
-- **Log:** `%APPDATA%\PhishUrl\phishurl.log`
+- **Database:** `%APPDATA%\LinkGuard\linkguard.db` — whitelist, blacklist, history, settings
+- **Log:** `%APPDATA%\LinkGuard\linkguard.log`
 - **No telemetry.** URLs are only sent externally if you configure a Google Safe Browsing or VirusTotal API key.
 
 ---

@@ -30,7 +30,7 @@ class SettingsWindow(tk.Toplevel):
     def __init__(self, parent, on_settings_changed=None):
         super().__init__(parent)
         self.on_settings_changed = on_settings_changed
-        self.title("PhishUrl — Settings")
+        self.title("LinkGuard — Settings")
         self.configure(bg=COLORS["bg"])
         self.geometry("680x520")
         self.resizable(True, True)
@@ -109,7 +109,7 @@ class SettingsWindow(tk.Toplevel):
         self._vars["protocol_handler"] = _checkbox(
             f, "Intercept all http/https link clicks",
             ph_enabled,
-            note="When enabled, PhishUrl checks every link before it opens in your browser."
+            note="When enabled, LinkGuard checks every link before it opens in your browser."
         )
 
         _section(f, "Risk Threshold  (minimum level to show alert)")
@@ -243,7 +243,7 @@ class SettingsWindow(tk.Toplevel):
             if not ok:
                 messagebox.showerror("Protocol Handler",
                     "Could not register as URL handler.\n"
-                    "Try running PhishUrl as administrator.", parent=self)
+                    "Try running LinkGuard as administrator.", parent=self)
         elif not want_ph and ph_active:
             startup.disable_protocol_handler()
 

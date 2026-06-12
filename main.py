@@ -1,5 +1,5 @@
 """
-PhishUrl — System tray phishing URL checker.
+LinkGuard — System tray phishing URL checker.
 
 Entry point behavior:
   - No args:         start tray app normally
@@ -18,7 +18,7 @@ from pathlib import Path
 
 # ── Logging setup ─────────────────────────────────────────────────────────────
 from database import APP_DIR
-LOG_FILE = APP_DIR / "phishurl.log"
+LOG_FILE = APP_DIR / "linkguard.log"
 
 logging.basicConfig(
     level=logging.INFO,
@@ -28,7 +28,7 @@ logging.basicConfig(
         logging.StreamHandler(sys.stdout),
     ],
 )
-log = logging.getLogger("phishurl")
+log = logging.getLogger("linkguard")
 
 
 def main():
@@ -49,14 +49,14 @@ def main():
         return
 
     # ── Single-instance check ─────────────────────────────────────────────────
-    lock_file = APP_DIR / "phishurl.lock"
+    lock_file = APP_DIR / "linkguard.lock"
     if _is_already_running(lock_file):
-        log.warning("PhishUrl is already running.")
+        log.warning("LinkGuard is already running.")
         _show_already_running_msg()
         return
 
     # ── Normal tray mode ──────────────────────────────────────────────────────
-    app = PhishUrlApp(lock_file)
+    app = LinkGuardApp(lock_file)
     app.run()
 
 
@@ -130,7 +130,7 @@ def _show_blocked_toast(url: str, domain: str):
     root.withdraw()
     from tkinter import messagebox
     messagebox.showwarning(
-        "PhishUrl — Blocked",
+        "LinkGuard — Blocked",
         f"The domain '{domain}' is on your blacklist.\nURL was not opened.",
         parent=root
     )
@@ -160,13 +160,13 @@ def _show_already_running_msg():
     from tkinter import messagebox
     root = tk.Tk()
     root.withdraw()
-    messagebox.showinfo("PhishUrl", "PhishUrl is already running in the system tray.")
+    messagebox.showinfo("LinkGuard", "LinkGuard is already running in the system tray.")
     root.destroy()
 
 
 # ── Main App ──────────────────────────────────────────────────────────────────
 
-class PhishUrlApp:
+class LinkGuardApp:
     """
     Manages the system tray icon, clipboard monitor, and URL check queue.
     Tray runs in a background thread; tkinter UI stays on the main thread.
@@ -203,7 +203,7 @@ class PhishUrlApp:
         # Drive both queues from the tkinter main loop (thread-safe polling)
         self._root.after(200, self._process_queues)
 
-        log.info("PhishUrl started (PID %s)", os.getpid())
+        log.info("LinkGuard started (PID %s)", os.getpid())
         self._root.mainloop()
         self._shutdown()
 
@@ -391,7 +391,7 @@ class PhishUrlApp:
     def _show_blacklist_toast(self, url: str, domain: str):
         from tkinter import messagebox
         messagebox.showwarning(
-            "PhishUrl — Blocked",
+            "LinkGuard — Blocked",
             f"Blocked blacklisted domain:\n{domain}",
             parent=self._root
         )
@@ -419,7 +419,7 @@ class PhishUrlApp:
     # ── Shutdown ──────────────────────────────────────────────────────────────
 
     def _quit(self):
-        log.info("Quitting PhishUrl")
+        log.info("Quitting LinkGuard")
         self._shutdown()
         self._root.quit()
 

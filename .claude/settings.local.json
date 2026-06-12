@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(/c/Users/gvaro/AppData/Local/Programs/Python/Python312/python.exe -m pip install pystray Pillow requests pywin32 pyperclip --quiet)",
+      "Bash(/c/Users/gvaro/AppData/Local/Programs/Python/Python312/python.exe -c \"\nimport sys\nsys.path.insert\\(0, '.'\\)\nimport database, checker, startup, clipboard_monitor, alert_ui, settings_ui, icon_gen\nprint\\('All modules imported OK'\\)\ndatabase.init_db\\(\\)\nprint\\('DB initialized at:', database.DB_PATH\\)\nfrom checker import check_url\nr = check_url\\('http://paypa1.com/login/verify/account'\\)\nprint\\(f'Test check: {r.domain} score={r.score} level={r.level}'\\)\nprint\\('Reasons:', r.reasons\\)\nr2 = check_url\\('https://google.com'\\)\nprint\\(f'Clean test: {r2.domain} score={r2.score} level={r2.level}'\\)\n\")",
+      "Bash(/c/Users/gvaro/AppData/Local/Programs/Python/Python312/python.exe -c \"\nfrom icon_gen import make_all_icons\nicons = make_all_icons\\(size=64\\)\nfor state, img in icons.items\\(\\):\n    print\\(f'Icon [{state}]: {img.size} {img.mode}'\\)\n\nfrom checker import check_url\n\ntests = [\n    \\('https://secure-login.paypal.com.evilsite.ru/verify', 'brand in subdomain'\\),\n    \\('http://192.168.1.1/admin/login', 'IP address'\\),\n    \\('https://xn--pple-43d.com', 'IDN punycode'\\),\n    \\('https://bit.ly/3xYZabc', 'URL shortener'\\),\n    \\('https://github.com/microsoft/vscode', 'clean'\\),\n    \\('https://bankofamerica-secure.tk/login/verify/account/password', 'many flags'\\),\n]\nprint\\(\\)\nfor url, desc in tests:\n    r = check_url\\(url\\)\n    print\\(f'[{r.level:10}] score={r.score:3}  {desc}'\\)\n    if r.reasons:\n        for reason in r.reasons[:2]:\n            print\\(f'              -> {reason}'\\)\n\")",
+      "Bash(/c/Users/gvaro/AppData/Local/Programs/Python/Python312/python.exe -c \"\nfrom checker import check_url\ntests = [\n    \\('https://bankofamerica-secure.tk/login/verify/account/password', 'brand in label'\\),\n    \\('https://bit.ly/3xYZabc', 'URL shortener'\\),\n    \\('https://paypal-secure-login.com/account/verify', 'paypal in label'\\),\n    \\('https://google.com', 'clean'\\),\n    \\('https://github.com', 'clean'\\),\n]\nfor url, desc in tests:\n    r = check_url\\(url\\)\n    print\\(f'[{r.level:10}] score={r.score:3}  {desc}'\\)\n    for reason in r.reasons[:3]:\n        print\\(f'              -> {reason}'\\)\n\" 2>&1)",
+      "Bash(git init:*)",
+      "Bash(git add:*)"
+    ]
+  }
+}

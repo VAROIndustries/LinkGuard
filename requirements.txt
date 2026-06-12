@@ -1,0 +1,5 @@
+pystray==0.19.5
+Pillow==10.4.0
+requests==2.32.3
+pywin32==306
+pyperclip==1.9.0

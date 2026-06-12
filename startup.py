@@ -30,11 +30,16 @@ def is_startup_enabled() -> bool:
 
 
 def enable_startup():
-    cmd = f'"{EXE_PATH}"'
-    if not EXE_PATH.endswith(".exe"):
-        # Running as a .py script — launch via pythonw for no console window
+    if getattr(sys, "frozen", False):
+        # PyInstaller .exe — no console window by default (built with --windowed)
+        cmd = f'"{EXE_PATH}"'
+    else:
+        # Script mode — always use pythonw.exe so no console window appears
         pythonw = Path(sys.executable).parent / "pythonw.exe"
-        cmd = f'"{pythonw}" "{EXE_PATH}"'
+        pyw = Path(os.path.abspath(sys.argv[0])).with_suffix(".pyw")
+        # Prefer .pyw launcher if it exists, otherwise use main script
+        script = str(pyw) if pyw.exists() else os.path.abspath(sys.argv[0])
+        cmd = f'"{pythonw}" "{script}"'
     with winreg.OpenKey(winreg.HKEY_CURRENT_USER, STARTUP_KEY,
                         access=winreg.KEY_SET_VALUE) as k:
         winreg.SetValueEx(k, APP_NAME, 0, winreg.REG_SZ, cmd)
@@ -84,10 +89,12 @@ def enable_protocol_handler() -> bool:
     if real_cmd:
         _save_original_browser(real_cmd)
 
-    cmd = f'"{EXE_PATH}" "%1"'
-    if not EXE_PATH.endswith(".exe"):
+    if getattr(sys, "frozen", False):
+        cmd = f'"{EXE_PATH}" "%1"'
+    else:
         pythonw = Path(sys.executable).parent / "pythonw.exe"
-        cmd = f'"{pythonw}" "{os.path.abspath(sys.argv[0])}" "%1"'
+        script = os.path.abspath(sys.argv[0])
+        cmd = f'"{pythonw}" "{script}" "%1"'
 
     try:
         for scheme in SCHEMES:

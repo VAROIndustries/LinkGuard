@@ -21,7 +21,8 @@
       "Bash(/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe -Command \"Stop-Process -Name pythonw -Force -ErrorAction SilentlyContinue; Write-Host done\")",
       "Bash(git -C /c/Projects/PhishUrl add main.py)",
       "Bash(git -C /c/Projects/PhishUrl diff --cached --stat)",
-      "Bash(git:*)"
+      "Bash(git:*)",
+      "Bash(/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe -Command \"Rename-Item 'C:\\\\Projects\\\\PhishUrl' 'C:\\\\Projects\\\\LinkGuard'; Write-Host 'Renamed'\")"
     ]
   }
 }

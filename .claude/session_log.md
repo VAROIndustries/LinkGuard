@@ -1,3 +1,19 @@
+## Session: 2026-06-12 (continued — LinkGuard rename session)
+
+### Prompts
+- (continued) — Folder rename note; asked for varo.industries repo name to add /linkguard redirect
+
+### Work Done
+- (continued from previous session) Full rename PhishUrl → LinkGuard completed; GitHub repo renamed; local remote updated; folder rename left for manual step
+
+### Next Steps
+- Add /linkguard redirect to varo.industries site (repo name pending from user)
+- Manually rename C:\Projects\PhishUrl → C:\Projects\LinkGuard in Explorer
+- Build standalone .exe with PyInstaller (run build.bat)
+- Add Google Safe Browsing / VirusTotal API keys to settings
+
+---
+
 ## Session: 2026-06-12
 
 ### Prompts

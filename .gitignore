@@ -6,3 +6,5 @@ build/
 *.spec
 .env
 *.log
+**/.claude/session_log.md
+**/.claude/settings.local.json

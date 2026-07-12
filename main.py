@@ -14,7 +14,15 @@ import logging
 import threading
 import queue
 import time
+import ctypes
 from pathlib import Path
+
+# Give LinkGuard its own identity so Windows treats it as a separate app
+# from other Python processes (enables independent taskbar/tray pinning).
+try:
+    ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("VAROIndustries.LinkGuard.1")
+except Exception:
+    pass
 
 # ── Logging setup ─────────────────────────────────────────────────────────────
 from database import APP_DIR

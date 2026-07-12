@@ -8,3 +8,4 @@ build/
 *.log
 **/.claude/session_log.md
 **/.claude/settings.local.json
+logs/session_log.md

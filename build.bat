@@ -13,7 +13,6 @@ echo Building executable...
   --windowed ^
   --name LinkGuard ^
   --icon NONE ^
-  --add-data "." ^
   main.py
 
 echo.

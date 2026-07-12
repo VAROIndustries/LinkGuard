@@ -1,6 +1,6 @@
 # LinkGuard
 
-_Built by [VARØ Industries](https://varo.industries/apps)_
+_Built by [VARØ Industries](https://varo.industries/apps#github)_
 
 A Windows system tray application that silently monitors URLs — from your clipboard and every link you click — and warns you before a phishing page can load.
 

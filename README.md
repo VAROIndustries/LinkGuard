@@ -1,5 +1,8 @@
 # LinkGuard
 
+**🌐 Tool page: [varo.industries/tools/linkguard](https://varo.industries/tools/linkguard)** — features, screenshots, install, and FAQ.
+
+
 _Built by [VARØ Industries](https://varo.industries/apps#github)_
 
 A Windows system tray application that silently monitors URLs — from your clipboard and every link you click — and warns you before a phishing page can load.

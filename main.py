@@ -235,6 +235,9 @@ class LinkGuardApp:
         def open_settings(icon, item):
             self._action_queue.put("settings")
 
+        def open_about(icon, item):
+            self._action_queue.put("about")
+
         def quit_app(icon, item):
             self._action_queue.put("quit")
 
@@ -246,6 +249,7 @@ class LinkGuardApp:
             Menu.SEPARATOR,
             MenuItem("Pause monitoring",   pause_resume),
             Menu.SEPARATOR,
+            MenuItem("About LinkGuard…",   open_about),
             MenuItem("Quit",               quit_app),
         )
 
@@ -309,6 +313,8 @@ class LinkGuardApp:
             self._show_manual_check_dialog()
         elif action == "settings":
             self._show_settings()
+        elif action == "about":
+            self._show_about()
         elif action == "pause_resume":
             self._paused = not self._paused
             icon_key = "inactive" if self._paused else "normal"
@@ -418,6 +424,10 @@ class LinkGuardApp:
     def _show_settings(self):
         from settings_ui import SettingsWindow
         SettingsWindow(self._root, on_settings_changed=self._on_settings_changed)
+
+    def _show_about(self):
+        from about import AboutWindow
+        AboutWindow(self._root)
 
     def _on_settings_changed(self):
         """Called after settings window closes — re-apply live settings."""

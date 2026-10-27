@@ -1,5 +1,5 @@
 pystray==0.19.5
 Pillow==13.0.0
-requests==2.32.3
+requests==2.34.2
 pywin32==306
 pyperclip==1.9.0
